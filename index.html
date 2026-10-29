@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f0f12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Vinilo">
+<title>Vinilo</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg hidden xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></symbol>
+  <symbol id="i-repeat-one" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1l-2 1v1h1.5v4H13z"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><path d="M6 10a2 2 0 100 4 2 2 0 000-4zm6 0a2 2 0 100 4 2 2 0 000-4zm6 0a2 2 0 100 4 2 2 0 000-4z"/></symbol>
+  <symbol id="i-add" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M15 6H3v2h12V6zm0 4H3v2h12v-2zM3 16h8v-2H3v2zM17 6v8.18A3 3 0 1019 17V8h3V6h-5z"/></symbol>
+</svg>
+
+<header class="top">
+  <button id="back" class="icon" aria-label="Volver" hidden><svg class="ic"><use href="#i-back"/></svg></button>
+  <h1 id="title">Canciones</h1>
+  <button id="add" class="icon add" aria-label="Añadir música"><svg class="ic"><use href="#i-add"/></svg></button>
+</header>
+<input id="file-input" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.flac,.ogg,.opus" multiple hidden>
+<input id="import-input" type="file" accept=".csv,.txt,.m3u,.m3u8,text/*" hidden>
+
+<main>
+  <input id="search" type="search" placeholder="Buscar canción, artista o álbum" autocomplete="off" aria-label="Buscar">
+  <div id="content"></div>
+</main>
+
+<div id="mini" hidden>
+  <div class="art" id="mini-art"></div>
+  <div class="meta"><b id="mini-title"></b><span id="mini-artist"></span></div>
+  <button class="icon" id="mini-play" aria-label="Reproducir o pausar"><svg class="ic"><use href="#i-play"/></svg></button>
+  <div class="bar"><i id="mini-progress"></i></div>
+</div>
+
+<section id="now" aria-label="Reproduciendo">
+  <div class="now-bg" id="now-bg"></div>
+  <header>
+    <button class="icon" id="now-close" aria-label="Cerrar"><svg class="ic"><use href="#i-down"/></svg></button>
+    <span>Reproduciendo</span>
+    <span class="icon"></span>
+  </header>
+  <div class="art big" id="now-art"></div>
+  <div class="meta now-meta"><b id="now-title"></b><span id="now-artist"></span></div>
+  <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Posición">
+  <div class="times"><span id="t-cur">0:00</span><span id="t-dur">0:00</span></div>
+  <div class="controls">
+    <button class="icon" id="shuffle" aria-label="Aleatorio"><svg class="ic"><use href="#i-shuffle"/></svg></button>
+    <button class="icon" id="prev" aria-label="Anterior"><svg class="ic"><use href="#i-prev"/></svg></button>
+    <button class="icon play" id="play" aria-label="Reproducir o pausar"><svg class="ic"><use href="#i-play"/></svg></button>
+    <button class="icon" id="next" aria-label="Siguiente"><svg class="ic"><use href="#i-next"/></svg></button>
+    <button class="icon" id="repeat" aria-label="Repetir"><svg class="ic"><use href="#i-repeat"/></svg></button>
+  </div>
+</section>
+
+<nav class="tabs">
+  <button data-view="songs"><svg class="ic"><use href="#i-note"/></svg>Canciones</button>
+  <button data-view="playlists"><svg class="ic"><use href="#i-list"/></svg>Playlists</button>
+</nav>
+
+<dialog id="sheet"></dialog>
+<div id="toast" role="status" hidden></div>
+<audio id="audio"></audio>
+<script type="module" src="app.js"></script>
+</body>
+</html>
